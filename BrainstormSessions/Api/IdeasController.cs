@@ -13,7 +13,7 @@ namespace BrainstormSessions.Api
     public class IdeasController : ControllerBase
     {
         private readonly IBrainstormSessionRepository _sessionRepository;
-        private readonly ILog logger = LogManager.GetLogger(nameof(IdeasController));
+        private readonly ILog logger = LogManager.GetLogger(typeof(IdeasController));
 
         public IdeasController(IBrainstormSessionRepository sessionRepository)
         {
@@ -47,12 +47,14 @@ namespace BrainstormSessions.Api
         {
             if (!ModelState.IsValid)
             {
+                logger.Error("ModelState is not valid");
                 return BadRequest(ModelState);
             }
 
             var session = await _sessionRepository.GetByIdAsync(model.SessionId);
             if (session == null)
             {
+                logger.Error("Session not found.");
                 return NotFound(model.SessionId);
             }
 
@@ -112,6 +114,7 @@ namespace BrainstormSessions.Api
 
             if (session == null)
             {
+                logger.Error("Session not found.");
                 return NotFound(model.SessionId);
             }
 

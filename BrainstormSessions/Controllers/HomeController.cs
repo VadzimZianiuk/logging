@@ -13,7 +13,7 @@ namespace BrainstormSessions.Controllers
     public class HomeController : Controller
     {
         private readonly IBrainstormSessionRepository _sessionRepository;
-        private readonly ILog logger = LogManager.GetLogger(nameof(HomeController));
+        private readonly ILog logger = LogManager.GetLogger(typeof(HomeController));
 
         public HomeController(IBrainstormSessionRepository sessionRepository)
         {

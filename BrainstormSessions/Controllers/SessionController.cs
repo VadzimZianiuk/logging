@@ -9,7 +9,7 @@ namespace BrainstormSessions.Controllers
     public class SessionController : Controller
     {
         private readonly IBrainstormSessionRepository _sessionRepository;
-        private readonly ILog logger = LogManager.GetLogger(nameof(SessionController));
+        private readonly ILog logger = LogManager.GetLogger(typeof(SessionController));
 
         public SessionController(IBrainstormSessionRepository sessionRepository)
         {
@@ -20,6 +20,7 @@ namespace BrainstormSessions.Controllers
         {
             if (!id.HasValue)
             {
+                logger.Warn("Id is invalid.");
                 return RedirectToAction(actionName: nameof(Index),
                     controllerName: "Home");
             }
@@ -28,6 +29,7 @@ namespace BrainstormSessions.Controllers
             var session = await _sessionRepository.GetByIdAsync(id.Value);
             if (session == null)
             {
+                logger.Warn("Session not found.");
                 return Content("Session not found.");
             }
 
