@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BrainstormSessions.ClientModels;
 using BrainstormSessions.Core.Interfaces;
 using BrainstormSessions.Core.Model;
+using log4net;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BrainstormSessions.Api
@@ -12,6 +13,7 @@ namespace BrainstormSessions.Api
     public class IdeasController : ControllerBase
     {
         private readonly IBrainstormSessionRepository _sessionRepository;
+        private readonly ILog logger = LogManager.GetLogger(nameof(IdeasController));
 
         public IdeasController(IBrainstormSessionRepository sessionRepository)
         {
@@ -25,6 +27,7 @@ namespace BrainstormSessions.Api
             var session = await _sessionRepository.GetByIdAsync(sessionId);
             if (session == null)
             {
+                logger.Error("session not found.");
                 return NotFound(sessionId);
             }
 
@@ -101,6 +104,7 @@ namespace BrainstormSessions.Api
         {
             if (!ModelState.IsValid)
             {
+                logger.Error("ModelState is not valid");
                 return BadRequest(ModelState);
             }
 

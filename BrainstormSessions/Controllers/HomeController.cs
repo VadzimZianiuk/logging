@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BrainstormSessions.Core.Interfaces;
 using BrainstormSessions.Core.Model;
 using BrainstormSessions.ViewModels;
+using log4net;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BrainstormSessions.Controllers
@@ -12,6 +13,7 @@ namespace BrainstormSessions.Controllers
     public class HomeController : Controller
     {
         private readonly IBrainstormSessionRepository _sessionRepository;
+        private readonly ILog logger = LogManager.GetLogger(nameof(HomeController));
 
         public HomeController(IBrainstormSessionRepository sessionRepository)
         {
@@ -20,6 +22,7 @@ namespace BrainstormSessions.Controllers
 
         public async Task<IActionResult> Index()
         {
+            logger.Info("HomeController.Index() OK");
             var sessionList = await _sessionRepository.ListAsync();
 
             var model = sessionList.Select(session => new StormSessionViewModel()
@@ -44,6 +47,7 @@ namespace BrainstormSessions.Controllers
         {
             if (!ModelState.IsValid)
             {
+                logger.Warn("HomeController.Index(NewSessionModel model)");
                 return BadRequest(ModelState);
             }
             else
